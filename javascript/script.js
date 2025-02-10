@@ -1,3 +1,53 @@
+// home window menu operations
+let menuPv = "home";
+
+const menuSetUp = (name) => {
+  let homeText =
+    "<p>Hello, This is a start up screen.</p><p>Please click the icons on the desktop to explore around.</p><p>You can click on the menu to the left to learn more .</p>";
+  let iconText = "<p>Click on each icon opens a different Window.</p>";
+  let windowText =
+    "<p>Windows work how you would expect.</p><p>Open, close, and move them as you would like</p>";
+  let startText =
+    "You can click on the start menu at the bottom for a couple customization options";
+
+  document.getElementById(`${name}-menu`).addEventListener("click", () => {
+    document.getElementById(`${menuPv}-menu`).innerHTML = `${menuPv
+      .charAt(0)
+      .toUpperCase()}${menuPv.substring(1)}`;
+    document.getElementById(`${name}-menu`).innerHTML = `>> ${name
+      .charAt(0)
+      .toUpperCase()}${name.substring(1)}`;
+
+    menuPv = name;
+
+    switch (name) {
+      case "home":
+        document.getElementById("menu-text").innerHTML = homeText;
+        break;
+      case "icons":
+        document.getElementById("menu-text").innerHTML = iconText;
+        break;
+      case "window":
+        document.getElementById("menu-text").innerHTML = windowText;
+        break;
+      case "start":
+        document.getElementById("menu-text").innerHTML = startText;
+        break;
+      default:
+        break;
+    }
+  });
+
+  // close out of menu
+  document.getElementById("menu-close").addEventListener("click", () => {
+    document.getElementById("home").style.display = "none";
+
+    document
+      .getElementById("window-tabs")
+      .removeChild(document.getElementById(`hometab`));
+  });
+};
+
 // if the window is being clicked on, set its zindex to 2 so its on the top
 const bringToTop = (name) => {
   document.getElementById("home").style.zIndex = name != "home" ? 1 : 2;
@@ -81,7 +131,16 @@ const setTime = () => {
 const currentTime = document.getElementById("time");
 setInterval(setTime, 1000);
 
-windowSetUp("home");
-windowSetUp("gallery");
-windowSetUp("about");
-windowSetUp("contact");
+const startUp = () => {
+  windowSetUp("home");
+  windowSetUp("gallery");
+  windowSetUp("about");
+  windowSetUp("contact");
+
+  menuSetUp("home");
+  menuSetUp("icons");
+  menuSetUp("window");
+  menuSetUp("start");
+}
+
+startUp();

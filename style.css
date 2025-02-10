@@ -29,7 +29,7 @@
   background: var(--background);
   height: 100vh;
 
-  overflow: hidden
+  overflow: hidden;
 }
 
 /* desktop icons */
@@ -46,7 +46,6 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* position: fixed; */
 
   width: 3rem;
   margin-bottom: 2rem;
@@ -66,8 +65,8 @@
 
 #home {
   background: var(--window-bg);
-  height: 40rem;
-  width: 60rem;
+  height: 25rem;
+  width: 40rem;
 
   border-top-color: var(--window-top-left);
   border-left-color: var(--window-top-left);
@@ -81,6 +80,8 @@
   z-index: 1;
 
   position: relative;
+
+  background-image: url(./assets/clouds.jpg);
 }
 
 .topbar {
@@ -97,9 +98,8 @@
 
   position: absolute;
 
-  top: 0.5%;
-  left: 0.5%;
-  width: 59rem;
+  top: 0.1%;
+  width: 99.5%
 }
 
 .topbar #left {
@@ -108,7 +108,7 @@
 
 .topbar #left img {
   height: 1rem;
-  margin-right: 2rem;
+  margin-right: 1rem;
 }
 
 .topbar #left h1 {
@@ -130,16 +130,77 @@
 
 #home-content {
   display: flex;
-  overflow: hidden;
+  align-items: center;
 
+  height: 99%;
+  width: 99%;
+
+  flex-direction: column;
+  overflow: hidden;
+  width: 39.2rem;
   position: absolute;
 
   top: 10%;
   left: 0.5%;
 }
 
-#home-content img {
-  object-fit: contain;
+#home-content h1 {
+  align-self: baseline;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#home-content #information {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+#home-content #information #menu {
+  width: 50%;
+}
+
+#home-content #information #menu p {
+  margin-left: 1rem;
+  display: inline;
+  cursor: pointer;
+}
+
+#home-content #information #menu #contents {
+  padding: 0.2rem;
+  background: var(--window-bottom-right);
+  color: var(--window-top-left);
+}
+
+#home-content #information #menu .menu-item {
+  margin-top: 0.75rem;
+}
+
+#home-content #information #menu-text {
+  margin-right: 1rem;
+  margin-top: 1rem;
+  width: 50%;
+  height: 10rem;
+}
+
+#home-content #information #menu-text p {
+  margin-bottom: 2rem;
+}
+
+#home-content button {
+  align-self: flex-end;
+  margin-top: 2rem;
+  margin-right: 0.5rem;
+  width: 15%;
+
+
+  border-top-color: var(--window-top-left);
+  border-left-color: var(--window-top-left);
+  border-right-color: var(--window-bottom-right);
+  border-bottom-color: var(--window-bottom-right);
+  border-width: 0.15rem;
+  border-style: outset;
 }
 
 /* gallery window */
@@ -216,6 +277,7 @@
   height: 2rem;
   width: 100vw;
   background: var(--window-bg);
+  z-index: 4;
 
   display: flex;
   align-items: center;
