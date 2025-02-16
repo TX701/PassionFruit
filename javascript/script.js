@@ -48,12 +48,30 @@ const menuSetUp = (name) => {
   });
 };
 
-// if the window is being clicked on, set its zindex to 2 so its on the top
+let order = ["home"];
+
+// dynamically changes zindex of windows based off of what was clicked most recently
 const bringToTop = (name) => {
-  document.getElementById("home").style.zIndex = name != "home" ? 1 : 2;
-  document.getElementById("gallery").style.zIndex = name != "gallery" ? 1 : 2;
-  document.getElementById("about").style.zIndex = name != "about" ? 1 : 2;
-  document.getElementById("contact").style.zIndex = name != "contact" ? 1 : 2;
+  let place = order.indexOf(name); // check if window is already open
+
+  if (place != -1) {
+    let filteredArray = order.filter((e) => e != name); // if its open remove it  from the order index
+    order = filteredArray;
+  }
+
+  order.unshift(name); // make window the first element in order
+
+  order.forEach((element) => {
+    document.getElementById(`${element}tab`).style.backgroundColor =
+      name == element ? "#e8e8e8" : "#bfbfbf";
+
+    let placement = order.length - order.indexOf(element); // go through order and make the zindex of each window match its placement in reverse (ie 0 = length, 1 = length - 1)
+    document.getElementById(element).style.zIndex = placement;
+  });
+
+  document.getElementById("footer").style.zIndex = order.length + 1; // give the footer the highest zindex
+  
+  console.log(order);
 };
 
 const addToTaskBar = (name) => {
@@ -122,12 +140,14 @@ const windowSetUp = (name) => {
 // clock in footer
 const setTime = () => {
   let date = new Date();
-  let AMPM = date.getHours() < 13 ? "AM" : "PM";
+  let time = ("0" + (date.getHours() % 12 || 12)).slice(-2);
+  let AMPM = date.getHours() < 12 ? "AM" : "PM";
 
-  currentTime.innerHTML = `<p>${date.getHours() % 12}:${(
-    "0" + date.getMinutes()
-  ).slice(-2)} ${AMPM}</p>`;
+  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(
+    -2
+  )} ${AMPM}</p>`;
 };
+
 const currentTime = document.getElementById("time");
 setInterval(setTime, 1000);
 
