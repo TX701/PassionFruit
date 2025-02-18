@@ -333,6 +333,7 @@
   padding: 0.2rem;
 
   flex: 2;
+  height: 2rem;
   max-width: 10%;
   min-width: 0; /* makes it possible for tabs to shrink depending on the amount of tabs open */
 
@@ -353,7 +354,7 @@
 }
 
 #footer .tabs p {
-  font-size: 0.8vw;
+  font-size: 1vw;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -367,7 +368,14 @@
   border-style: outset;
 
   display: flex;
+  flex-direction: row;
   align-items: center;
+  width: 5rem;
   height: 1.5rem;
   font-size: 0.85rem;
+}
+
+#footer #time p {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

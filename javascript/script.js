@@ -126,8 +126,6 @@ const windowSetUp = (name, type) => {
     document.getElementById(name).style.left = "25%";
     document.getElementById(name).style.overflow = "";
 
-    // document.getElementById(name).style.border = "none";
-
     document.querySelector(`#${name}-topbar`).style.top = "0.1%";
     document.querySelector(`#${name}-topbar`).style.width = "99.5%";
 
@@ -158,7 +156,7 @@ const windowSetUp = (name, type) => {
 
     moveWin.delete(name); // remove window from movement array
   });
-  
+
   bringToTop(name); // bring to top and add window to the order array
 };
 
@@ -257,9 +255,6 @@ const homeWindow = (num) => {
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
 
-  // document.getElementById(`home${num}`).style.left = "25%";
-  // document.getElementById(`home${num}`).style.top = "20%";
-
   // menuFunction(num);
 
   windowSetUp(`home${num}`, "home");
@@ -304,6 +299,7 @@ const galleryWindow = (num) => {
                     <p><span>T</span>ools</p>
                     <p><span>H</span>elp</p>
                   </div>
+
                   <div class="img-gallery">
                     <div class="left">
                       <img src="./assets/gallery.png" alt="" />
