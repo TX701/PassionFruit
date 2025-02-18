@@ -11,7 +11,8 @@ const bringToTop = (name) => {
   order.unshift(name); // make window the first element in order
 
   order.forEach((element) => {
-    document.getElementById(`${element}tab`).style.backgroundColor = name == element ? "#e8e8e8" : "#bfbfbf";
+    document.getElementById(`${element}tab`).style.backgroundColor =
+      name == element ? "#e8e8e8" : "#bfbfbf";
 
     let placement = order.length - order.indexOf(element); // go through order and make the zindex of each window match its placement in reverse (ie 0 = length, 1 = length - 1)
     document.getElementById(element).style.zIndex = placement;
@@ -27,7 +28,7 @@ const bringToTop = (name) => {
 const getWindowTotal = (name) => {
   let filteredArray = order.filter((e) => e.indexOf(name) != -1);
 
-  console.log(filteredArray)
+  console.log(filteredArray);
   if (filteredArray.length == 0) {
     return "";
   } else {
@@ -44,12 +45,17 @@ const draggableWindow = (name) => {
       if (moveWin.get(name)) {
         let currentX = e.clientX;
         let currentY = e.clientY;
-        document.getElementById(name).style.left = document.getElementById(name).offsetLeft + (currentX - initialX) + "px";
-        document.getElementById(name).style.top = document.getElementById(name).offsetTop + (currentY - initialY) + "px";
+        document.getElementById(name).style.left =
+          document.getElementById(name).offsetLeft +
+          (currentX - initialX) +
+          "px";
+        document.getElementById(name).style.top =
+          document.getElementById(name).offsetTop +
+          (currentY - initialY) +
+          "px";
         initialX = currentX;
         initialY = currentY;
       }
-      
     };
 
     const stopElement = () => {
@@ -67,8 +73,10 @@ const addToTaskBar = (name, type) => {
                     <img src="./assets/${type}.png" alt="Image Broken" />
                     <p>${type.charAt(0).toUpperCase()}${type.substring(1)}</p>
                     </div>`;
-  
-  document.getElementById("window-tabs").insertAdjacentHTML("beforeend", newTab);
+
+  document
+    .getElementById("window-tabs")
+    .insertAdjacentHTML("beforeend", newTab);
 
   document.getElementById(`${name}tab`).addEventListener("click", () => {
     bringToTop(name);
@@ -76,7 +84,7 @@ const addToTaskBar = (name, type) => {
     if (document.getElementById(name).style.display == "none") {
       document.getElementById(name).style.display = "block";
     }
-  })
+  });
 };
 
 const windowSetUp = (name, type) => {
@@ -137,21 +145,29 @@ const windowSetUp = (name, type) => {
 
   // adds functionality to the exit button
   document.getElementById(`${name}-exit`).addEventListener("click", () => {
-    document.getElementById("windows").removeChild(document.getElementById(name));
+    document
+      .getElementById("windows")
+      .removeChild(document.getElementById(name));
 
-    document.getElementById("window-tabs").removeChild(document.getElementById(`${name}tab`));
+    document
+      .getElementById("window-tabs")
+      .removeChild(document.getElementById(`${name}tab`));
 
     let filteredArray = order.filter((e) => e != name); // remove window from order array
     order = filteredArray;
 
     moveWin.delete(name); // remove window from movement array
   });
+  
   bringToTop(name); // bring to top and add window to the order array
 };
 
 document.getElementById(`home-icon`).addEventListener("dblclick", () => {
-  console.log(getWindowTotal("home"));
   homeWindow(getWindowTotal("home"));
+});
+
+document.getElementById(`gallery-icon`).addEventListener("dblclick", () => {
+  galleryWindow(getWindowTotal("gallery"));
 });
 
 // clock in footer
@@ -170,36 +186,38 @@ setInterval(setTime, 1000);
 
 const menuFunction = (num) => {
   const funct = (name) => {
-    document.querySelector(`#home${num} #${name.toLowerCase()}-item`).addEventListener("click", () => {
-      let text;
+    document
+      .querySelector(`#home${num} #${name.toLowerCase()}-item`)
+      .addEventListener("click", () => {
+        let text;
 
-      switch (name) {
-        case "Home":
-          text = `<p>Hello, This is a start up screen.</p>
+        switch (name) {
+          case "Home":
+            text = `<p>Hello, This is a start up screen.</p>
                   <p>Please click the icons on the desktop to explore around.</p>
                   <p>
                     You can click on the menu to the left to learn more about each
                     icon
                   </p>`;
-          break;
-        case "Icons":
-          text = `<p>Click on each icon opens a different Window.</p>`;
-          break;
-        case "Windows":
-          text = `<p>Windows work how you would expect.</p>
+            break;
+          case "Icons":
+            text = `<p>Click on each icon opens a different Window.</p>`;
+            break;
+          case "Windows":
+            text = `<p>Windows work how you would expect.</p>
                   <p>Open, close, and move them as you would like</p>`;
-          break;
-        case "Start":
-          text = `<p>You can click on the start menu at the bottom for a couple customization options</p>`;
-          break;
-        default:
-          break;
-      }
+            break;
+          case "Start":
+            text = `<p>You can click on the start menu at the bottom for a couple customization options</p>`;
+            break;
+          default:
+            break;
+        }
 
-      document.querySelector(`#home${num} #menu${num}-text`).innerHTML = text;
-    });
-  }
-  
+        document.querySelector(`#home${num} #menu${num}-text`).innerHTML = text;
+      });
+  };
+
   funct("Home", num);
   funct("Icons", num);
   funct("Windows", num);
@@ -238,13 +256,84 @@ const homeWindow = (num) => {
                 </div>`;
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
-  
-  document.getElementById(`home${num}`).style.left = "25%";
-  document.getElementById(`home${num}`).style.top = "20%";
+
+  // document.getElementById(`home${num}`).style.left = "25%";
+  // document.getElementById(`home${num}`).style.top = "20%";
 
   // menuFunction(num);
 
   windowSetUp(`home${num}`, "home");
+};
+
+const galleryWindow = (num) => {
+  const HTML = `<div class="gallery" id="gallery${num}">
+                  <div class="topbar" id="gallery${num}-topbar">
+                    <div class="left">
+                      <img src="./assets/gallery.png" alt="Broken Image" />
+                      <h1>Gallery</h1>
+                    </div>
+                    <div class="right">
+                      <img
+                        class="tray"
+                        id="gallery${num}-tray"
+                        src="./assets/tray-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="max"
+                        id="gallery${num}-max"
+                        src="./assets/max-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="min"
+                        id="gallery${num}-min"
+                        src="./assets/restoredown-icon.png"
+                        alt=""
+                      />
+                      <img id="gallery${num}-exit" src="./assets/close-icon.png" alt="" />
+                    </div>
+                  </div>
+
+                  <div class="options-bar">
+                    <p><span>F</span>ile</p>
+                    <p><span>E</span>dit</p>
+                    <p><span>V</span>iew</p>
+                    <p><span>G</span>o</p>
+                    <p>F<span>a</span>vorites</p>
+                    <p><span>T</span>ools</p>
+                    <p><span>H</span>elp</p>
+                  </div>
+                  <div class="img-gallery">
+                    <div class="left">
+                      <img src="./assets/gallery.png" alt="" />
+                      <h1>Gallery</h1>
+                      <div class="divider">
+                          <div class="red"></div>
+                          <div class="orange"></div>
+                          <div class="green"></div>
+                          <div class="blue"></div>
+                      </div>
+                      <p>Select an image to view its description</p>
+                      <p>Double click to open the picture in its own window</p>
+                    </div>
+                    <div class="right"></div>
+                    <div class="images"></div>
+                  </div>
+
+                  <div class="gallery-footer">
+                      <div class="object-amt">[] Objects</div>
+                      <div class="file-sizes">[] Mb</div>
+                      <div class="location">
+                          <img src="./assets/home.png" alt="">
+                          <p>My Computer</p>
+                      </div>
+                  </div>
+                </div>`;
+
+  document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
+
+  windowSetUp(`gallery${num}`, "gallery");
 };
 
 const startUp = () => {

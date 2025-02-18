@@ -20,9 +20,9 @@
   --window-bg-accent-3: #e8e8e8;
   --text: #fff;
 
-  -webkit-user-select: none; 
-  -ms-user-select: none; 
-  user-select: none; 
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   overflow: hidden;
 }
@@ -32,6 +32,14 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+}
+
+#windows {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* desktop icons */
@@ -82,6 +90,7 @@
   position: absolute;
 
   background-image: url(./assets/clouds.jpg);
+  background-size: cover;
 }
 
 .topbar {
@@ -99,7 +108,7 @@
   position: absolute;
 
   top: 0.1%;
-  width: 99.5%
+  width: 99.5%;
 }
 
 .topbar .left {
@@ -199,12 +208,9 @@
 
 /* gallery window */
 
-#gallery {
-  background: var(--window-bg);
-  height: 40rem;
-  width: 60rem;
-
-  display: none;
+.gallery {
+  height: 25rem;
+  width: 40rem;
 
   border-top-color: var(--window-top-left);
   border-left-color: var(--window-top-left);
@@ -214,9 +220,8 @@
   border-style: outset;
 
   position: absolute;
-  top: 10%;
-  right: 10%;
-  z-index: 2;
+
+  background: var(--window-bg);
 }
 
 /* about window */
@@ -287,8 +292,6 @@
   display: flex;
   align-items: center;
   gap: 5rem;
-  
-  
 }
 
 #footer #start-menu {
@@ -320,7 +323,7 @@
   justify-content: left;
 
   width: 80vw;
-  height: 1.50rem;
+  height: 1.5rem;
 }
 
 #footer .tabs {
@@ -350,7 +353,7 @@
 }
 
 #footer .tabs p {
-  font-size: 0.80vw;
+  font-size: 0.8vw;
   text-overflow: ellipsis;
   overflow: hidden;
 }
