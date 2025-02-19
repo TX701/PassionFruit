@@ -19,9 +19,6 @@ const bringToTop = (name) => {
   });
 
   document.getElementById("footer").style.zIndex = order.length + 1; // give the footer the highest zindex
-
-  console.log(order);
-  console.log(moveWin);
 };
 
 // when opening a new window its best to know how many of that "type" (home/gall/etc) are already open for id naming purposes
@@ -45,14 +42,8 @@ const draggableWindow = (name) => {
       if (moveWin.get(name)) {
         let currentX = e.clientX;
         let currentY = e.clientY;
-        document.getElementById(name).style.left =
-          document.getElementById(name).offsetLeft +
-          (currentX - initialX) +
-          "px";
-        document.getElementById(name).style.top =
-          document.getElementById(name).offsetTop +
-          (currentY - initialY) +
-          "px";
+        document.getElementById(name).style.left = document.getElementById(name).offsetLeft + (currentX - initialX) + "px";
+        document.getElementById(name).style.top = document.getElementById(name).offsetTop + (currentY - initialY) + "px";
         initialX = currentX;
         initialY = currentY;
       }
@@ -72,11 +63,9 @@ const addToTaskBar = (name, type) => {
   let newTab = `<div class="tabs" id="${name}tab">
                     <img src="./assets/${type}.png" alt="Image Broken" />
                     <p>${type.charAt(0).toUpperCase()}${type.substring(1)}</p>
-                    </div>`;
+                </div>`;
 
-  document
-    .getElementById("window-tabs")
-    .insertAdjacentHTML("beforeend", newTab);
+  document.getElementById("window-tabs").insertAdjacentHTML("beforeend", newTab);
 
   document.getElementById(`${name}tab`).addEventListener("click", () => {
     bringToTop(name);
@@ -92,13 +81,11 @@ const windowSetUp = (name, type) => {
 
   moveWin.set(name, true); // add window to movement map
 
-  // bring to top if the window is clicked on
   document.getElementById(name).addEventListener("mousedown", () => {
-    bringToTop(name);
+    bringToTop(name); // bring to top if the window is clicked on
   });
 
-  // add icon to task bar
-  addToTaskBar(name, type);
+  addToTaskBar(name, type); // add icon to task bar
 
   // adds functionality to the maximize button
   document.getElementById(`${name}-max`).addEventListener("click", () => {
@@ -107,7 +94,6 @@ const windowSetUp = (name, type) => {
     document.getElementById(name).style.top = 0;
     document.getElementById(name).style.left = 0;
     document.getElementById(name).style.overflow = "hidden";
-    // document.getElementById(name).style.border = "none";
 
     document.querySelector(`#${name}-topbar`).style.top = "0";
     document.querySelector(`#${name}-topbar`).style.width = "100%";
@@ -143,13 +129,9 @@ const windowSetUp = (name, type) => {
 
   // adds functionality to the exit button
   document.getElementById(`${name}-exit`).addEventListener("click", () => {
-    document
-      .getElementById("windows")
-      .removeChild(document.getElementById(name));
+    document.getElementById("windows").removeChild(document.getElementById(name));
 
-    document
-      .getElementById("window-tabs")
-      .removeChild(document.getElementById(`${name}tab`));
+    document.getElementById("window-tabs").removeChild(document.getElementById(`${name}tab`));
 
     let filteredArray = order.filter((e) => e != name); // remove window from order array
     order = filteredArray;
@@ -174,9 +156,7 @@ const setTime = () => {
   let time = ("0" + (date.getHours() % 12 || 12)).slice(-2);
   let AMPM = date.getHours() < 12 ? "AM" : "PM";
 
-  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(
-    -2
-  )} ${AMPM}</p>`;
+  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(-2)} ${AMPM}</p>`;
 };
 
 const currentTime = document.getElementById("time");
@@ -184,11 +164,8 @@ setInterval(setTime, 1000);
 
 const menuFunction = (num) => {
   const funct = (name) => {
-    document
-      .querySelector(`#home${num} #${name.toLowerCase()}-item`)
-      .addEventListener("click", () => {
+    document.querySelector(`#home${num} #${name.toLowerCase()}-item`).addEventListener("click", () => {
         let text;
-
         switch (name) {
           case "Home":
             text = `<p>Hello, This is a start up screen.</p>
@@ -306,7 +283,7 @@ const galleryWindow = (num) => {
                       <h1>Gallery</h1>
                       <div class="divider">
                           <div class="red"></div>
-                          <div class="orange"></div>
+                          <div class="yellow"></div>
                           <div class="green"></div>
                           <div class="blue"></div>
                       </div>
