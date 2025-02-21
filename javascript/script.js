@@ -1,4 +1,32 @@
 let order = ["home"]; // array to check zindex placement for windows
+let gallery = [
+  {
+    file: "Blossoms",
+    ext: "jpg",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+  },
+  {
+    file: "CherryBlossoms",
+    ext: "jpg",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+  },
+  {
+    file: "Hummingbird",
+    ext: "jpg",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+  },
+  {
+    file: "Landscape",
+    ext: "jpg",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+  },
+  {
+    file: "PinkFlowers",
+    ext: "jpg",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+  },
+];
+
 const moveWin = new Map();
 
 // dynamically changes zindex of windows based off of what was clicked most recently
@@ -42,8 +70,14 @@ const draggableWindow = (name) => {
       if (moveWin.get(name)) {
         let currentX = e.clientX;
         let currentY = e.clientY;
-        document.getElementById(name).style.left = document.getElementById(name).offsetLeft + (currentX - initialX) + "px";
-        document.getElementById(name).style.top = document.getElementById(name).offsetTop + (currentY - initialY) + "px";
+        document.getElementById(name).style.left =
+          document.getElementById(name).offsetLeft +
+          (currentX - initialX) +
+          "px";
+        document.getElementById(name).style.top =
+          document.getElementById(name).offsetTop +
+          (currentY - initialY) +
+          "px";
         initialX = currentX;
         initialY = currentY;
       }
@@ -65,7 +99,9 @@ const addToTaskBar = (name, type) => {
                     <p>${type.charAt(0).toUpperCase()}${type.substring(1)}</p>
                 </div>`;
 
-  document.getElementById("window-tabs").insertAdjacentHTML("beforeend", newTab);
+  document
+    .getElementById("window-tabs")
+    .insertAdjacentHTML("beforeend", newTab);
 
   document.getElementById(`${name}tab`).addEventListener("click", () => {
     bringToTop(name);
@@ -129,9 +165,13 @@ const windowSetUp = (name, type) => {
 
   // adds functionality to the exit button
   document.getElementById(`${name}-exit`).addEventListener("click", () => {
-    document.getElementById("windows").removeChild(document.getElementById(name));
+    document
+      .getElementById("windows")
+      .removeChild(document.getElementById(name));
 
-    document.getElementById("window-tabs").removeChild(document.getElementById(`${name}tab`));
+    document
+      .getElementById("window-tabs")
+      .removeChild(document.getElementById(`${name}tab`));
 
     let filteredArray = order.filter((e) => e != name); // remove window from order array
     order = filteredArray;
@@ -156,7 +196,9 @@ const setTime = () => {
   let time = ("0" + (date.getHours() % 12 || 12)).slice(-2);
   let AMPM = date.getHours() < 12 ? "AM" : "PM";
 
-  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(-2)} ${AMPM}</p>`;
+  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(
+    -2
+  )} ${AMPM}</p>`;
 };
 
 const currentTime = document.getElementById("time");
@@ -164,7 +206,9 @@ setInterval(setTime, 1000);
 
 const menuFunction = (num) => {
   const funct = (name) => {
-    document.querySelector(`#home${num} #${name.toLowerCase()}-item`).addEventListener("click", () => {
+    document
+      .querySelector(`#home${num} #${name.toLowerCase()}-item`)
+      .addEventListener("click", () => {
         let text;
         switch (name) {
           case "Home":
@@ -290,7 +334,6 @@ const galleryWindow = (num) => {
                       <p>Select an image to view its description</p>
                       <p>Double click to open the picture in its own window</p>
                     </div>
-                    <div class="right"></div>
                     <div class="images"></div>
                   </div>
 
@@ -305,6 +348,22 @@ const galleryWindow = (num) => {
                 </div>`;
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
+
+  gallery.forEach((element) => {
+    let imgHTML = ` <div class="gall-icon" id="${element.file}">
+                      <div class="img-icon"></div>
+                      <p>${element.file}.${element.ext}</p>
+                    </div>`;
+
+    document.querySelector(".img-gallery .images").insertAdjacentHTML("beforeend", imgHTML);
+
+    document.querySelector(`#${element.file} .img-icon`).style.backgroundImage = `url(./assets/gallery/${element.file}.${element.ext})`;
+    document.querySelector(`#${element.file} .img-icon`).style.backgroundSize = "contain";
+    document.querySelector(`#${element.file} .img-icon`).style.backgroundPosition = "center";
+    document.querySelector(`#${element.file} .img-icon`).style.backgroundRepeat = "no-repeat";
+
+    document.getElementById(element.file).addEventListener("dbclick", () => {});
+  });
 
   windowSetUp(`gallery${num}`, "gallery");
 };
