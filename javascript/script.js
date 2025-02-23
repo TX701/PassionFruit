@@ -1,33 +1,35 @@
 let order = ["home"]; // array to check zindex placement for windows
+
+// array for gallery items
 let gallery = [
   {
     file: "Blossoms",
     ext: "jpg",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+    desc: "A semi up-close shot of deep pink cherry blossoms.",
   },
   {
     file: "CherryBlossoms",
     ext: "jpg",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+    desc: "An up-close shot of light pink cherry blossoms.",
   },
   {
     file: "Hummingbird",
     ext: "jpg",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+    desc: "An up-close shot of a hummingbird about to drink from a bright red hibiscus flower.",
   },
   {
     file: "Landscape",
     ext: "jpg",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+    desc: "A wide lense shot of a lake, surrounded by bright green grass and purple and red flowers.",
   },
   {
     file: "PinkFlowers",
     ext: "jpg",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ea magni facere dignissimos reprehenderit dicta soluta eligendi qui suscipit minus tenetur ad aut voluptates itaque, eius quisquam. Eveniet, quas itaque.",
+    desc: "An up-close shot of light pink fuzzy flowers.",
   },
 ];
 
-const moveWin = new Map();
+const moveWin = new Map(); // map for which windows are moveable
 
 // dynamically changes zindex of windows based off of what was clicked most recently
 const bringToTop = (name) => {
@@ -94,14 +96,18 @@ const draggableWindow = (name) => {
 };
 
 const addToTaskBar = (name, type) => {
+  let fileLocation = `${type}.png`;
+
+  if (type.indexOf(".") > 0) {
+    fileLocation = `gallery/${type}`;
+  }
+
   let newTab = `<div class="tabs" id="${name}tab">
-                    <img src="./assets/${type}.png" alt="Image Broken" />
-                    <p>${type.charAt(0).toUpperCase()}${type.substring(1)}</p>
+                  <img src="./assets/${fileLocation}" alt="Image Broken" />
+                  <p>${type.charAt(0).toUpperCase()}${type.substring(1)}</p>
                 </div>`;
 
-  document
-    .getElementById("window-tabs")
-    .insertAdjacentHTML("beforeend", newTab);
+  document.getElementById("window-tabs").insertAdjacentHTML("beforeend", newTab);
 
   document.getElementById(`${name}tab`).addEventListener("click", () => {
     bringToTop(name);
@@ -123,55 +129,53 @@ const windowSetUp = (name, type) => {
 
   addToTaskBar(name, type); // add icon to task bar
 
-  // adds functionality to the maximize button
-  document.getElementById(`${name}-max`).addEventListener("click", () => {
-    document.getElementById(name).style.height = "100vh";
-    document.getElementById(name).style.width = "100vw";
-    document.getElementById(name).style.top = 0;
-    document.getElementById(name).style.left = 0;
-    document.getElementById(name).style.overflow = "hidden";
+  if (type != "home") {
+    // adds functionality to the maximize button
+    document.getElementById(`${name}-max`).addEventListener("click", () => {
+      document.getElementById(name).style.height = "100vh";
+      document.getElementById(name).style.width = "100vw";
+      document.getElementById(name).style.top = 0;
+      document.getElementById(name).style.left = 0;
+      document.getElementById(name).style.overflow = "hidden";
 
-    document.querySelector(`#${name}-topbar`).style.top = "0";
-    document.querySelector(`#${name}-topbar`).style.width = "100%";
+      document.querySelector(`#${name}-topbar`).style.top = "0";
+      document.querySelector(`#${name}-topbar`).style.width = "100%";
 
-    moveWin.set(name, false); // the window cannot move in fullscreen mode
+      moveWin.set(name, false); // the window cannot move in fullscreen mode
 
-    document.getElementById(`${name}-max`).style.display = "none";
-    document.getElementById(`${name}-min`).style.display = "block";
-  });
+      document.getElementById(`${name}-max`).style.display = "none";
+      document.getElementById(`${name}-min`).style.display = "block";
+    });
 
-  // adds functionality to the minimize button
-  document.getElementById(`${name}-min`).addEventListener("click", () => {
-    document.getElementById(name).style.height = "25rem";
-    document.getElementById(name).style.width = "40rem";
-    document.getElementById(name).style.top = "10%";
-    document.getElementById(name).style.left = "25%";
-    document.getElementById(name).style.overflow = "";
+    // adds functionality to the minimize button
+    document.getElementById(`${name}-min`).addEventListener("click", () => {
+      document.getElementById(name).style.height = "25rem";
+      document.getElementById(name).style.width = "auto";
+      document.getElementById(name).style.top = "10%";
+      document.getElementById(name).style.left = "25%";
+      document.getElementById(name).style.overflow = "";
 
-    document.querySelector(`#${name}-topbar`).style.top = "0.1%";
-    document.querySelector(`#${name}-topbar`).style.width = "99.5%";
+      document.querySelector(`#${name}-topbar`).style.top = "0.1%";
+      document.querySelector(`#${name}-topbar`).style.width = "99.5%";
 
-    moveWin.set(name, true);
+      moveWin.set(name, true);
 
-    document.getElementById(`${name}-max`).style.display = "block";
-    document.getElementById(`${name}-min`).style.display = "none";
-  });
+      document.getElementById(`${name}-max`).style.display = "block";
+      document.getElementById(`${name}-min`).style.display = "none";
+    });
 
-  // adds functionality to the tray button
-  document.getElementById(`${name}-tray`).addEventListener("click", () => {
-    document.getElementById(name).style.display = "none";
-    document.getElementById(`${name}tab`).style.backgroundColor = "#bfbfbf";
-  });
+    // adds functionality to the tray button
+    document.getElementById(`${name}-tray`).addEventListener("click", () => {
+      document.getElementById(name).style.display = "none";
+      document.getElementById(`${name}tab`).style.backgroundColor = "#bfbfbf";
+    });
+  }
 
   // adds functionality to the exit button
   document.getElementById(`${name}-exit`).addEventListener("click", () => {
-    document
-      .getElementById("windows")
-      .removeChild(document.getElementById(name));
+    document.getElementById("windows").removeChild(document.getElementById(name));
 
-    document
-      .getElementById("window-tabs")
-      .removeChild(document.getElementById(`${name}tab`));
+    document.getElementById("window-tabs").removeChild(document.getElementById(`${name}tab`));
 
     let filteredArray = order.filter((e) => e != name); // remove window from order array
     order = filteredArray;
@@ -281,6 +285,42 @@ const homeWindow = (num) => {
   windowSetUp(`home${num}`, "home");
 };
 
+const imageWindow = (image, num) => {
+  const HTML = `<div class="image-window" id="${image.file}${num}">
+                  <div class="topbar" id="${image.file}${num}-topbar">
+                    <div class="left">
+                      <img src="./assets/gallery/${image.file}.${image.ext}" alt="Broken Image" />
+                      <h1>${image.file}.${image.ext}</h1>
+                    </div>
+                    <div class="right">
+                      <img
+                        class="tray"
+                        id="${image.file}${num}-tray"
+                        src="./assets/tray-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="max"
+                        id="${image.file}${num}-max"
+                        src="./assets/max-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="min"
+                        id="${image.file}${num}-min"
+                        src="./assets/restoredown-icon.png"
+                        alt=""
+                      />
+                      <img id="${image.file}${num}-exit" src="./assets/close-icon.png" alt="" />
+                    </div>
+                  </div>
+                  <img src="./assets/gallery/${image.file}.${image.ext}" alt="Broken Image" draggable="false">
+                </div>`;
+
+  document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
+  windowSetUp(`${image.file}${num}`, `${image.file}.${image.ext}`);
+};
+
 const galleryWindow = (num) => {
   const HTML = `<div class="gallery" id="gallery${num}">
                   <div class="topbar" id="gallery${num}-topbar">
@@ -331,15 +371,16 @@ const galleryWindow = (num) => {
                           <div class="green"></div>
                           <div class="blue"></div>
                       </div>
-                      <p>Select an image to view its description</p>
-                      <p>Double click to open the picture in its own window</p>
+                      <div class="img-text">
+                        <p>Select an image to view its description</p>
+                        <p>Double click to open the picture in its own window</p>
+                      </div>
                     </div>
                     <div class="images"></div>
                   </div>
 
                   <div class="gallery-footer">
-                      <div class="object-amt">[] Objects</div>
-                      <div class="file-sizes">[] Mb</div>
+                      <div class="object-amt"></div>
                       <div class="location">
                           <img src="./assets/home.png" alt="">
                           <p>My Computer</p>
@@ -349,20 +390,39 @@ const galleryWindow = (num) => {
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
 
+  let prevImg = "";
+  let amt = 0;
+
   gallery.forEach((element) => {
-    let imgHTML = ` <div class="gall-icon" id="${element.file}">
+    let imgHTML = ` <div class="gall-icon" id="${element.file}-icon">
                       <div class="img-icon"></div>
                       <p>${element.file}.${element.ext}</p>
                     </div>`;
 
-    document.querySelector(".img-gallery .images").insertAdjacentHTML("beforeend", imgHTML);
+    document.querySelector(`#gallery${num} .images`).insertAdjacentHTML("beforeend", imgHTML);
 
-    document.querySelector(`#${element.file} .img-icon`).style.backgroundImage = `url(./assets/gallery/${element.file}.${element.ext})`;
-    document.querySelector(`#${element.file} .img-icon`).style.backgroundSize = "contain";
-    document.querySelector(`#${element.file} .img-icon`).style.backgroundPosition = "center";
-    document.querySelector(`#${element.file} .img-icon`).style.backgroundRepeat = "no-repeat";
+    document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.backgroundImage = `url(./assets/gallery/${element.file}.${element.ext})`;
 
-    document.getElementById(element.file).addEventListener("dbclick", () => {});
+    document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("click", () => {
+      document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.color = "#fff";
+      document.querySelector(`#gallery${num} #${element.file}-icon p`).style.color = "#fff";
+      document.querySelector(`#gallery${num} #${element.file}-icon p`).style.background = "rgba(0, 0, 128, 1)";
+      document.querySelector(`#gallery${num} .img-text`).innerHTML = `<p>${element.file}.${element.ext}</p> <p>${element.desc}</p>`;
+
+      if (prevImg != "") {
+        document.querySelector(`#gallery${num} #${prevImg}-icon p`).style.color = "#000";
+        document.querySelector(`#gallery${num} #${prevImg}-icon p`).style.background = "";
+      }
+
+      prevImg = element.file;
+    });
+
+    document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("dblclick", () => {
+      imageWindow(element, getWindowTotal(element.file));
+        
+    });
+
+    document.querySelector(`#gallery${num} .object-amt`).innerHTML = `<p>${++amt} Object(s)</p>`;
   });
 
   windowSetUp(`gallery${num}`, "gallery");
@@ -370,9 +430,6 @@ const galleryWindow = (num) => {
 
 const startUp = () => {
   homeWindow("");
-  // windowSetUp("gallery");
-  // windowSetUp("about");
-  // windowSetUp("contact");
 };
 
 startUp();

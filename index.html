@@ -6,7 +6,8 @@
     <title>Passion Fruit</title>
     <link rel="shortcut icon" href="./assets/favcon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
-    <script type="module" src="./javascript/script.js" defer></script>
+    <script type="text/javascript" src="./javascript/script.js" defer></script>
+    <script type="text/javascript" src="./javascript/data.js" defer></script>
   </head>
   <body>
     <div id="container">
@@ -16,23 +17,23 @@
       <!-- icons at the side of the background used to open new windows -->
       <div id="desktop-icons">
         <div class="icons" id="recycle">
-          <img src="./assets/recylce.png" alt="" />
+          <img src="./assets/recylce.png" alt="" draggable="false" />
           <p>Recycle Bin</p>
         </div>
         <div class="icons" id="home-icon">
-          <img src="./assets/home.png" alt="" />
+          <img src="./assets/home.png" alt="" draggable="false" />
           <p>Home</p>
         </div>
         <div class="icons" id="gallery-icon">
-          <img src="./assets/gallery-icon.png" alt="" />
+          <img src="./assets/gallery-icon.png" alt="" draggable="false" />
           <p>Gallery</p>
         </div>
         <div class="icons" id="about-icon">
-          <img src="./assets/about.png" alt="" />
+          <img src="./assets/about.png" alt="" draggable="false" />
           <p>About</p>
         </div>
         <div class="icons" id="contact-icon">
-          <img src="./assets/contact.png" alt="" />
+          <img src="./assets/contact.png" alt="" draggable="false" />
           <p>Contact</p>
         </div>
       </div>
@@ -61,10 +62,10 @@
 
       <div class="wrapper">
         <img src="./assets/error.png" alt="Image broken" />
-        <p>
-          This website is incompatiable with your current screen size, please
-          view this website on a device with a bigger width
-        </p>
+        <div>
+          <p>This website is incompatiable with your current screen size.</p>
+          <p>Please view this website on a device with a bigger width.</p>
+        </div>
       </div>
     </div>
   </body>
