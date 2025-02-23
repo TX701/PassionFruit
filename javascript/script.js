@@ -20,7 +20,7 @@ let gallery = [
   {
     file: "Landscape",
     ext: "jpg",
-    desc: "A wide lense shot of a lake, surrounded by bright green grass and purple and red flowers.",
+    desc: "A wide shot of a lake, surrounded by bright green grass and purple and red flowers.",
   },
   {
     file: "PinkFlowers",
@@ -55,7 +55,6 @@ const bringToTop = (name) => {
 const getWindowTotal = (name) => {
   let filteredArray = order.filter((e) => e.indexOf(name) != -1);
 
-  console.log(filteredArray);
   if (filteredArray.length == 0) {
     return "";
   } else {
@@ -63,7 +62,7 @@ const getWindowTotal = (name) => {
   }
 };
 
-const draggableWindow = (name) => {
+const draggableElement = (name) => {
   document.getElementById(name).addEventListener("mousedown", (e) => {
     let initialX = e.clientX;
     let initialY = e.clientY;
@@ -119,7 +118,7 @@ const addToTaskBar = (name, type) => {
 };
 
 const windowSetUp = (name, type) => {
-  draggableWindow(name); // make the window moveable
+  draggableElement(name); // make the window moveable
 
   moveWin.set(name, true); // add window to movement map
 
@@ -186,12 +185,16 @@ const windowSetUp = (name, type) => {
   bringToTop(name); // bring to top and add window to the order array
 };
 
-document.getElementById(`home-icon`).addEventListener("dblclick", () => {
+document.getElementById("home-icon").addEventListener("dblclick", () => {
   homeWindow(getWindowTotal("home"));
 });
 
-document.getElementById(`gallery-icon`).addEventListener("dblclick", () => {
+document.getElementById("gallery-icon").addEventListener("dblclick", () => {
   galleryWindow(getWindowTotal("gallery"));
+});
+
+document.getElementById("about-icon").addEventListener("dblclick", () => {
+  aboutWindow(getWindowTotal("about"));
 });
 
 // clock in footer
@@ -209,10 +212,9 @@ const currentTime = document.getElementById("time");
 setInterval(setTime, 1000);
 
 const menuFunction = (num) => {
+
   const funct = (name) => {
-    document
-      .querySelector(`#home${num} #${name.toLowerCase()}-item`)
-      .addEventListener("click", () => {
+    document.querySelector(`#home${num} .${name.toLowerCase()}-menu`).addEventListener("click", () => {
         let text;
         switch (name) {
           case "Home":
@@ -220,7 +222,7 @@ const menuFunction = (num) => {
                   <p>Please click the icons on the desktop to explore around.</p>
                   <p>
                     You can click on the menu to the left to learn more about each
-                    icon
+                    icon.
                   </p>`;
             break;
           case "Icons":
@@ -228,10 +230,7 @@ const menuFunction = (num) => {
             break;
           case "Windows":
             text = `<p>Windows work how you would expect.</p>
-                  <p>Open, close, and move them as you would like</p>`;
-            break;
-          case "Start":
-            text = `<p>You can click on the start menu at the bottom for a couple customization options</p>`;
+                  <p>Open, close, and move them as you would like.</p>`;
             break;
           default:
             break;
@@ -244,7 +243,6 @@ const menuFunction = (num) => {
   funct("Home", num);
   funct("Icons", num);
   funct("Windows", num);
-  funct("Start", num);
 };
 
 const homeWindow = (num) => {
@@ -255,9 +253,6 @@ const homeWindow = (num) => {
                       <h1>Home</h1>
                     </div>
                     <div class="right">
-                      <img class="tray" id="home${num}-tray" src="./assets/tray-icon.png" alt="" />
-                      <img class="max" id="home${num}-max" src="./assets/max-icon.png" alt="" />
-                      <img class="min" id="home${num}-min" src="./assets/restoredown-icon.png" alt="" />
                       <img id="home${num}-exit" src="./assets/close-icon.png" alt="" />
                     </div>
                   </div>
@@ -270,9 +265,14 @@ const homeWindow = (num) => {
                         <div class="menu-item" id="home${num}-item"><p class="home-menu">Home</p></div>
                         <div class="menu-item" id="home${num}-item"><p class="icons-menu">Icons</p></div>
                         <div class="menu-item" id="home${num}-item"><p class="windows-menu">Windows</p></div>
-                        <div class="menu-item" id="home${num}-item"><p class="start-menu">Start</p></div>
                       </div>
-                      <div id="menu${num}-text">
+                      <div class="menu-text" id="menu${num}-text">
+                        <p>Hello, This is a start up screen.</p>
+                        <p>Please click the icons on the desktop to explore around.</p>
+                        <p>
+                          You can click on the menu to the left to learn more about each
+                          icon.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -280,7 +280,7 @@ const homeWindow = (num) => {
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
 
-  // menuFunction(num);
+  menuFunction(num);
 
   windowSetUp(`home${num}`, "home");
 };
@@ -427,6 +427,49 @@ const galleryWindow = (num) => {
 
   windowSetUp(`gallery${num}`, "gallery");
 };
+
+const aboutWindow = (num) => {
+  const HTML = `<div class="about" id="about${num}">
+                  <div class="topbar" id="about${num}-topbar">
+                    <div class="left">
+                      <img src="./assets/about.png" alt="Broken Image" />
+                      <h1>About</h1>
+                    </div>
+                    <div class="right">
+                      <img
+                        class="tray"
+                        id="about${num}-tray"
+                        src="./assets/tray-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="max"
+                        id="about${num}-max"
+                        src="./assets/max-icon.png"
+                        alt=""
+                      />
+                      <img
+                        class="min"
+                        id="about${num}-min"
+                        src="./assets/restoredown-icon.png"
+                        alt=""
+                      />
+                      <img id="about${num}-exit" src="./assets/close-icon.png" alt="" />
+                    </div>
+                  </div>
+
+                  <div class="about-container">
+                    <img src="./assets/profile.jpg" alt="Broken Image" draggable="false">
+                    <div class="about-wrapper">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad excepturi facilis omnis cum vitae blanditiis expedita debitis dolorem placeat laborum voluptas molestias eos, dolores dolor corrupti numquam ut odit necessitatibus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus error fugiat consequuntur quas quasi quis aspernatur fugit totam molestiae ipsam illo ipsa nemo, doloribus officia quae eius blanditiis nulla eveniet!</p>
+                      <button class="contact-button">Contact</button>
+                    </div>
+                  </div>
+                </div>`;
+
+  document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
+  windowSetUp(`about${num}`, "about");
+}
 
 const startUp = () => {
   homeWindow("");
