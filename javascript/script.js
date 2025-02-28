@@ -29,7 +29,7 @@ let gallery = [
   },
 ];
 
-const moveWin = new Map(); // map for which windows are moveable
+const windowDetails = new Map(); // [windowname, {moveable: boolean, winHeight: valuepx, winWidth: valuepx}]
 
 // dynamically changes zindex of windows based off of what was clicked most recently
 const bringToTop = (name) => {
@@ -41,8 +41,7 @@ const bringToTop = (name) => {
   order.unshift(name); // make window the first element in order
 
   order.forEach((element) => {
-    document.getElementById(`${element}tab`).style.backgroundColor =
-      name == element ? "#e8e8e8" : "#bfbfbf";
+    document.getElementById(`${element}tab`).style.backgroundColor = name == element ? "#e8e8e8" : "#bfbfbf";
 
     let placement = order.length - order.indexOf(element); // go through order and make the zindex of each window match its placement in reverse (ie 0 = length, 1 = length - 1)
     document.getElementById(element).style.zIndex = placement;
@@ -51,14 +50,14 @@ const bringToTop = (name) => {
   document.getElementById("footer").style.zIndex = order.length + 1; // give the footer the highest zindex
 };
 
-// when opening a new window its best to know how many of that "type" (home/gall/etc) are already open for id naming purposes
+// when opening a new window we need to know how many of that "type" (home/gall/etc) are already open for id naming purposes
 const getWindowTotal = (name) => {
   let filteredArray = order.filter((e) => e.indexOf(name) != -1);
 
   if (filteredArray.length == 0) {
-    return "";
+    return ""; // there are zero so the id will just be the type
   } else {
-    return filteredArray.length + 1;
+    return filteredArray.length + 1; // there are some so the id will be one more than the current amount
   }
 };
 
@@ -68,17 +67,11 @@ const draggableElement = (name) => {
     let initialY = e.clientY;
 
     const moveElement = (e) => {
-      if (moveWin.get(name)) {
+      if (windowDetails.get(name).moveable) {
         let currentX = e.clientX;
         let currentY = e.clientY;
-        document.getElementById(name).style.left =
-          document.getElementById(name).offsetLeft +
-          (currentX - initialX) +
-          "px";
-        document.getElementById(name).style.top =
-          document.getElementById(name).offsetTop +
-          (currentY - initialY) +
-          "px";
+        document.getElementById(name).style.left = document.getElementById(name).offsetLeft + (currentX - initialX) + "px";
+        document.getElementById(name).style.top = document.getElementById(name).offsetTop + (currentY - initialY) + "px";
         initialX = currentX;
         initialY = currentY;
       }
@@ -94,6 +87,7 @@ const draggableElement = (name) => {
   });
 };
 
+// add element to the task bar at the bottom of the page
 const addToTaskBar = (name, type) => {
   let fileLocation = `${type}.png`;
 
@@ -112,15 +106,26 @@ const addToTaskBar = (name, type) => {
     bringToTop(name);
 
     if (document.getElementById(name).style.display == "none") {
-      document.getElementById(name).style.display = "block";
+      document.getElementById(name).style.display = "block"; // if the window is in the tray get it out of the tray
     }
   });
+};
+
+// clock in footer
+const setTime = () => {
+  const currentTime = document.getElementById("time");
+
+  let date = new Date();
+  let time = ("0" + (date.getHours() % 12 || 12)).slice(-2);
+  let AMPM = date.getHours() < 12 ? "AM" : "PM";
+
+  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(-2)} ${AMPM}</p>`;
 };
 
 const windowSetUp = (name, type) => {
   draggableElement(name); // make the window moveable
 
-  moveWin.set(name, true); // add window to movement map
+  windowDetails.set(name, {moveable: true, winHeight: document.getElementById(name).offsetHeight + "px", winWidth: document.getElementById(name).offsetWidth + "px"}); // add window to details map
 
   document.getElementById(name).addEventListener("mousedown", () => {
     bringToTop(name); // bring to top if the window is clicked on
@@ -133,14 +138,14 @@ const windowSetUp = (name, type) => {
     document.getElementById(`${name}-max`).addEventListener("click", () => {
       document.getElementById(name).style.height = "100vh";
       document.getElementById(name).style.width = "100vw";
-      document.getElementById(name).style.top = 0;
-      document.getElementById(name).style.left = 0;
+      document.getElementById(name).style.top = "0";
+      document.getElementById(name).style.left = "0";
       document.getElementById(name).style.overflow = "hidden";
 
       document.querySelector(`#${name}-topbar`).style.top = "0";
       document.querySelector(`#${name}-topbar`).style.width = "100%";
 
-      moveWin.set(name, false); // the window cannot move in fullscreen mode
+      windowDetails.set(name, {moveable: false, winHeight: windowDetails.get(name).winHeight, winWidth: windowDetails.get(name).winWidth}); // the window cannot move in fullscreen mode
 
       document.getElementById(`${name}-max`).style.display = "none";
       document.getElementById(`${name}-min`).style.display = "block";
@@ -148,8 +153,9 @@ const windowSetUp = (name, type) => {
 
     // adds functionality to the minimize button
     document.getElementById(`${name}-min`).addEventListener("click", () => {
-      document.getElementById(name).style.height = "25rem";
-      document.getElementById(name).style.width = "auto";
+      document.getElementById(name).style.height = windowDetails.get(name).winHeight;
+      document.getElementById(name).style.width = windowDetails.get(name).winWidth;
+
       document.getElementById(name).style.top = "10%";
       document.getElementById(name).style.left = "25%";
       document.getElementById(name).style.overflow = "";
@@ -157,7 +163,7 @@ const windowSetUp = (name, type) => {
       document.querySelector(`#${name}-topbar`).style.top = "0.1%";
       document.querySelector(`#${name}-topbar`).style.width = "99.5%";
 
-      moveWin.set(name, true);
+      windowDetails.set(name, {moveable: true, winHeight: windowDetails.get(name).winHeight, winWidth: windowDetails.get(name).winWidth});
 
       document.getElementById(`${name}-max`).style.display = "block";
       document.getElementById(`${name}-min`).style.display = "none";
@@ -179,7 +185,7 @@ const windowSetUp = (name, type) => {
     let filteredArray = order.filter((e) => e != name); // remove window from order array
     order = filteredArray;
 
-    moveWin.delete(name); // remove window from movement array
+    windowDetails.delete(name); // remove window from movement array
   });
 
   bringToTop(name); // bring to top and add window to the order array
@@ -197,54 +203,6 @@ document.getElementById("about-icon").addEventListener("dblclick", () => {
   aboutWindow(getWindowTotal("about"));
 });
 
-// clock in footer
-const setTime = () => {
-  let date = new Date();
-  let time = ("0" + (date.getHours() % 12 || 12)).slice(-2);
-  let AMPM = date.getHours() < 12 ? "AM" : "PM";
-
-  currentTime.innerHTML = `<p>${time}:${("0" + date.getMinutes()).slice(
-    -2
-  )} ${AMPM}</p>`;
-};
-
-const currentTime = document.getElementById("time");
-setInterval(setTime, 1000);
-
-const menuFunction = (num) => {
-
-  const funct = (name) => {
-    document.querySelector(`#home${num} .${name.toLowerCase()}-menu`).addEventListener("click", () => {
-        let text;
-        switch (name) {
-          case "Home":
-            text = `<p>Hello, This is a start up screen.</p>
-                  <p>Please click the icons on the desktop to explore around.</p>
-                  <p>
-                    You can click on the menu to the left to learn more about each
-                    icon.
-                  </p>`;
-            break;
-          case "Icons":
-            text = `<p>Click on each icon opens a different Window.</p>`;
-            break;
-          case "Windows":
-            text = `<p>Windows work how you would expect.</p>
-                  <p>Open, close, and move them as you would like.</p>`;
-            break;
-          default:
-            break;
-        }
-
-        document.querySelector(`#home${num} #menu${num}-text`).innerHTML = text;
-      });
-  };
-
-  funct("Home", num);
-  funct("Icons", num);
-  funct("Windows", num);
-};
-
 const homeWindow = (num) => {
   const HTML = `<div class="home" id="home${num}">
                   <div class="topbar" id="home${num}-topbar">
@@ -258,30 +216,65 @@ const homeWindow = (num) => {
                   </div>
 
                   <div class="home-content">
-                    <h1>Logo Text</h1>
+                    <h1>Passion Fruit</h1>
                     <div class="information">
                       <div class="menu">
                         <div class="contents"><p>Contents</p></div>
-                        <div class="menu-item" id="home${num}-item"><p class="home-menu">Home</p></div>
-                        <div class="menu-item" id="home${num}-item"><p class="icons-menu">Icons</p></div>
-                        <div class="menu-item" id="home${num}-item"><p class="windows-menu">Windows</p></div>
+                        <div class="menu-item" id="home${num}-item"><p class="home-menu${num}">>> Home</p></div>
+                        <div class="menu-item" id="home${num}-item"><p class="icons-menu${num}">Icons</p></div>
+                        <div class="menu-item" id="home${num}-item"><p class="windows-menu${num}">Windows</p></div>
                       </div>
                       <div class="menu-text" id="menu${num}-text">
                         <p>Hello, This is a start up screen.</p>
                         <p>Please click the icons on the desktop to explore around.</p>
-                        <p>
-                          You can click on the menu to the left to learn more about each
-                          icon.
-                        </p>
+                        <p>You can click on the menu to the left to learn more about each icon.</p>
                       </div>
                     </div>
                   </div>
                 </div>`;
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
+  
+  const menuFunction = () => {
+    let prevMenu = "home";
 
-  menuFunction(num);
+    const funct = (name) => {
+      document.querySelector(`#home${num} .${name}-menu${num}`).addEventListener("click", () => {
+        let text;
+        switch (name) {
+          case "home":
+            text = `<p>Hello, This is a start up screen.</p>
+                    <p>Please click the icons on the desktop to explore around.</p>
+                    <p>You can click on the menu to the left to learn more about each icon.</p>`;
+            break;
+          case "icons":
+            text = `<p>Click on each icon opens a different Window.</p>
+                    <p>You will need to double click on an icon to open a new window.</p>
+                    <p>You may open multiple of the same window.</p>`;
+            break;
+          case "windows":
+            text = `<p>Windows work how you would expect.</p>
+                    <p>Open, close, and move them as you would like.</p>
+                    <p>Most windows will also have functions to minize to the tray or expand to be bigger, these functions will be by the close icon in the top left.</p>`;
+            break;
+          default:
+            break;
+        }
 
+        document.querySelector(`#home${num} .${name}-menu${num}`).innerHTML = `>> ${name.charAt(0).toUpperCase()}${name.slice(1)}`; // add an indicator that the current menu item is selected
+        document.querySelector(`#home${num} .${prevMenu}-menu${num}`).innerHTML = `${prevMenu.charAt(0).toUpperCase()}${prevMenu.slice(1)}`; // remove this indicator from the previously selected item
+        document.querySelector(`#home${num} #menu${num}-text`).innerHTML = text; // change the text to match the currently selected item
+          
+        prevMenu = name;
+      });
+    };
+
+    funct("home", num);
+    funct("icons", num);
+    funct("windows", num);
+  };
+
+  menuFunction();
   windowSetUp(`home${num}`, "home");
 };
 
@@ -352,13 +345,17 @@ const galleryWindow = (num) => {
                   </div>
 
                   <div class="options-bar">
-                    <p><span>F</span>ile</p>
-                    <p><span>E</span>dit</p>
-                    <p><span>V</span>iew</p>
-                    <p><span>G</span>o</p>
-                    <p>F<span>a</span>vorites</p>
-                    <p><span>T</span>ools</p>
-                    <p><span>H</span>elp</p>
+                    <div class="options-bar-divider"></div>
+                    <div class="options-bar-elements">
+                      <p><span>F</span>ile</p>
+                      <p><span>E</span>dit</p>
+                      <p><span>V</span>iew</p>
+                      <p><span>G</span>o</p>
+                      <p>F<span>a</span>vorites</p>
+                      <p><span>T</span>ools</p>
+                      <p><span>H</span>elp</p>
+                    </div>
+                    <div class="options-bar-divider"></div>
                   </div>
 
                   <div class="img-gallery">
@@ -390,41 +387,45 @@ const galleryWindow = (num) => {
 
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
 
-  let prevImg = "";
-  let amt = 0;
+  const gallerySetUp = () => {
+    let prevImg = "";
+    let amt = 0;
 
-  gallery.forEach((element) => {
-    let imgHTML = ` <div class="gall-icon" id="${element.file}-icon">
-                      <div class="img-icon"></div>
-                      <p>${element.file}.${element.ext}</p>
-                    </div>`;
+    gallery.forEach((element) => {
+      let imgHTML = ` <div class="gall-icon" id="${element.file}-icon">
+                        <div class="img-icon"><div class="img-filter"></div></div>
+                        <p>${element.file}.${element.ext}</p>
+                      </div>`;
 
-    document.querySelector(`#gallery${num} .images`).insertAdjacentHTML("beforeend", imgHTML);
+      document.querySelector(`#gallery${num} .images`).insertAdjacentHTML("beforeend", imgHTML);
 
-    document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.backgroundImage = `url(./assets/gallery/${element.file}.${element.ext})`;
+      document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.backgroundImage = `url(./assets/gallery/${element.file}.${element.ext})`;
 
-    document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("click", () => {
-      document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.color = "#fff";
-      document.querySelector(`#gallery${num} #${element.file}-icon p`).style.color = "#fff";
-      document.querySelector(`#gallery${num} #${element.file}-icon p`).style.background = "rgba(0, 0, 128, 1)";
-      document.querySelector(`#gallery${num} .img-text`).innerHTML = `<p>${element.file}.${element.ext}</p> <p>${element.desc}</p>`;
+      document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("click", () => {
+        document.querySelector(`#gallery${num} #${element.file}-icon p`).style.color = "#fff"; // change text to white
+        document.querySelector(`#gallery${num} #${element.file}-icon p`).style.background = "rgba(0, 0, 128, 1)"; // make text background blue
+        document.querySelector(`#gallery${num} #${element.file}-icon .img-icon`).style.backgroundImage = `linear-gradient(0deg, rgba(0, 0, 128, 0.5), rgba(0, 0, 128, 0.5)), url(./assets/gallery/${element.file}.${element.ext})`;
 
-      if (prevImg != "") {
-        document.querySelector(`#gallery${num} #${prevImg}-icon p`).style.color = "#000";
-        document.querySelector(`#gallery${num} #${prevImg}-icon p`).style.background = "";
-      }
+        document.querySelector(`#gallery${num} .img-text`).innerHTML = `<p>${element.file}.${element.ext}</p> <p>${element.desc}</p>`; // change the side bar text to match the selected image
 
-      prevImg = element.file;
+        if (prevImg != "") {
+          document.querySelector(`#gallery${num} #${prevImg.file}-icon p`).style.color = "#000"; // make the previously selected images text go back to normal
+          document.querySelector(`#gallery${num} #${prevImg.file}-icon p`).style.background = ""; // set the previous images text background to nothing
+          document.querySelector(`#gallery${num} #${prevImg.file}-icon .img-icon`).style.backgroundImage = `url(./assets/gallery/${prevImg.file}.${prevImg.ext})`; // get rid of the blue background filter
+        }
+
+        prevImg = element;
+      });
+
+      document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("dblclick", () => {
+        imageWindow(element, getWindowTotal(element.file));  
+      });
+
+      document.querySelector(`#gallery${num} .object-amt`).innerHTML = `<p>${++amt} Object(s)</p>`;
     });
+  }
 
-    document.querySelector(`#gallery${num} #${element.file}-icon`).addEventListener("dblclick", () => {
-      imageWindow(element, getWindowTotal(element.file));
-        
-    });
-
-    document.querySelector(`#gallery${num} .object-amt`).innerHTML = `<p>${++amt} Object(s)</p>`;
-  });
-
+  gallerySetUp();
   windowSetUp(`gallery${num}`, "gallery");
 };
 
@@ -461,18 +462,21 @@ const aboutWindow = (num) => {
                   <div class="about-container">
                     <img src="./assets/profile.jpg" alt="Broken Image" draggable="false">
                     <div class="about-wrapper">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad excepturi facilis omnis cum vitae blanditiis expedita debitis dolorem placeat laborum voluptas molestias eos, dolores dolor corrupti numquam ut odit necessitatibus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus error fugiat consequuntur quas quasi quis aspernatur fugit totam molestiae ipsam illo ipsa nemo, doloribus officia quae eius blanditiis nulla eveniet!</p>
+                      <h1>Name</h1>
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia magni commodi, soluta beatae eaque alias quasi quo omnis, provident quia molestiae distinctio. Temporibus voluptatem consequatur alias magnam delectus quaerat natus?</p>
                       <button class="contact-button">Contact</button>
                     </div>
                   </div>
                 </div>`;
-
+//<p>This is an example of an about page. Here, the webpage owner could display information about themselves or the purpose of their website.</p>
+                      
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
   windowSetUp(`about${num}`, "about");
 }
 
 const startUp = () => {
   homeWindow("");
+  setInterval(setTime, 1000); // for the clock in the in footer
 };
 
 startUp();
