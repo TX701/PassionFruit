@@ -248,7 +248,7 @@ const homeWindow = (num) => {
                     <p>You can click on the menu to the left to learn more about each icon.</p>`;
             break;
           case "icons":
-            text = `<p>Click on each icon opens a different Window.</p>
+            text = `<p>Each icon will open a different window.</p>
                     <p>You will need to double click on an icon to open a new window.</p>
                     <p>You may open multiple of the same window.</p>`;
             break;
@@ -463,13 +463,13 @@ const aboutWindow = (num) => {
                     <img src="./assets/profile.jpg" alt="Broken Image" draggable="false">
                     <div class="about-wrapper">
                       <h1>Name</h1>
+                      <p>This is an example of an about page. Here, the webpage owner could display information about themselves or the purpose of their website.</p>
                       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia magni commodi, soluta beatae eaque alias quasi quo omnis, provident quia molestiae distinctio. Temporibus voluptatem consequatur alias magnam delectus quaerat natus?</p>
                       <button class="contact-button">Contact</button>
                     </div>
                   </div>
                 </div>`;
-//<p>This is an example of an about page. Here, the webpage owner could display information about themselves or the purpose of their website.</p>
-                      
+
   document.getElementById("windows").insertAdjacentHTML("beforeend", HTML);
   windowSetUp(`about${num}`, "about");
 }
