@@ -3,63 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Passion Fruit</title>
-    <link rel="shortcut icon" href="./assets/favcon.png" type="image/x-icon" />
+    <title>PassionFruit</title>
+
     <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="./script.js" defer></script>
-  </head>
+
+    <script type="module" src="./javascript/script.js" defer></script>
+    <script type="module" src="./javascript/windows.js" defer></script>
+    <script type="module" src="./javascript/data.js" defer></script>
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"rel="stylesheet"/>
+    <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+
+    </head>
   <body>
-    <div id="container">
-      <!-- windows -->
-      <div id="windows"></div>
-
-      <!-- icons at the side of the background used to open new windows -->
-      <div id="desktop-icons">
-        <div class="icons" id="recycle">
-          <img src="./assets/recylce.png" alt="" draggable="false" />
-          <p>Recycle Bin</p>
+    <div id="all">
+      <div id="container">
+        <!-- windows -->
+        <div id="windows"></div>
+  
+        <!-- icons at the side of the background used to open new windows -->
+  
+        <div id="desktop-icons">
+          <div class="icons" id="recycle">
+            <img src="./assets/icons/recylce.png" alt="" draggable="false" />
+            <p>Recycle Bin</p>
+          </div>
+          <div class="icons" id="home-icon">
+            <img src="./assets/icons/home.png" alt="" draggable="false" />
+            <p>Home</p>
+          </div>
+          <div class="icons" id="gallery-icon">
+            <img src="./assets/icons/gallery.png" alt="" draggable="false" />
+            <p>Gallery</p>
+          </div>
+          <div class="icons" id="about-icon">
+            <img src="./assets/icons/about.png" alt="" draggable="false" />
+            <p>About</p>
+          </div>
         </div>
-        <div class="icons" id="home-icon">
-          <img src="./assets/home.png" alt="" draggable="false" />
-          <p>Home</p>
-        </div>
-        <div class="icons" id="gallery-icon">
-          <img src="./assets/gallery-icon.png" alt="" draggable="false" />
-          <p>Gallery</p>
-        </div>
-        <div class="icons" id="about-icon">
-          <img src="./assets/about.png" alt="" draggable="false" />
-          <p>About</p>
-        </div>
+  
+      <!-- error for if the user is using a small screen width -->
+        <div id="notice">
+          <div class="topbar" id="notice-topbar">
+            <div class="left">
+              <h1>Error</h1>
+            </div>
+          </div>
+  
+          <div class="wrapper">
+            <img src="./assets/icons/error.png" alt="Image broken" />
+            <div>
+              <p>This website is incompatiable with your current screen size.</p>
+              <p>Please view this website on a device with a bigger width.</p>
+            </div>
+          </div>
+       </div>
+  
       </div>
-
       <!-- bottom bar -->
       <div id="footer">
         <div id="left">
           <div id="start-menu-icon">
-            <img src="./assets/icon.png" alt="" />
+            <img src="./assets/icons/icon.png" alt="" />
             <p>Start</p>
           </div>
           <div id="window-tabs"></div>
         </div>
         <div id="time"></div>
-      </div>
-    </div>
-
-    <!-- error for if the user is using a small screen width -->
-    <div id="notice">
-      <div class="topbar" id="notice-topbar">
-        <div class="left">
-          <h1>Error</h1>
-        </div>
-      </div>
-
-      <div class="wrapper">
-        <img src="./assets/error.png" alt="Image broken" />
-        <div>
-          <p>This website is incompatiable with your current screen size.</p>
-          <p>Please view this website on a device with a bigger width.</p>
-        </div>
       </div>
     </div>
   </body>
