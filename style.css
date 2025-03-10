@@ -265,25 +265,6 @@
   cursor: url("./assets/CursorP.cur"), auto;
 }
 
-/* portfolio window */
-
-.portfolio {
-  height: 40rem;
-  width: 80vw;
-
-  border-top-color: var(--window-top-left);
-  border-left-color: var(--window-top-left);
-  border-right-color: var(--window-bottom-right);
-  border-bottom-color: var(--window-bottom-right);
-  border-width: 0.15rem;
-  border-style: outset;
-
-  position: absolute;
-
-  background: url(./assets/window_background.jpg);
-  background-size: cover;
-}
-
 .options-bar {
   width: 100%;
   background: var(--window-bg);
@@ -369,105 +350,6 @@
 .search-bar .bar button img {
   height: 0.6rem;
   margin: auto;
-}
-
-.portfolio .works {
-  height: 90%;
-  overflow-y: scroll;
-
-  -ms-overflow-style: none;  /* internext explorer */
-  scrollbar-width: none;  /* firefox */
-}
-
-.portfolio .works ul {
-  list-style-type: circle;
-}
-
-.portfolio .example-work {
-  display: flex;
-  gap: 2rem;
-
-  margin: 2rem;
-
-  margin-bottom: 5rem;
-}
-
-.portfolio .example-work p {
-  line-height: 1.5rem;
-}
-
-.portfolio .example-work .list {
-  margin-left: 3rem;
-}
-
-.portfolio .example-work .left {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.portfolio .example-work .left .work-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.portfolio .example-work h1 {
-  margin-bottom: 1.5rem;
-}
-
-.portfolio .example-work img {
-  width: 100%;
-  object-fit: contain;
-
-  margin-bottom: 2rem;
-}
-
-.portfolio .example-work button {
-  background: var(--window-bg);
-  border-top-color: var(--window-top-left);
-  border-left-color: var(--window-top-left);
-  border-right-color: var(--window-bottom-right);
-  border-bottom-color: var(--window-bottom-right);
-  border-width: 0.15rem;
-  border-style: outset;
-
-  width: 5rem;
-  padding: 0.2rem;
-
-  cursor: url("./assets/CursorP.cur"), auto;
-}
-
-.portfolio .example-work button:active {
-  border-top-color: var(--window-bottom-right);
-  border-left-color: var(--window-top-left);
-  border-right-color: var(--window-bottom-right);
-  border-bottom-color: var(--window-top-left);
-  border-width: 0.15rem;
-  border-style: outset;
-}
-
-.portfolio .passionfruit {
-  margin-top: 3rem;
-}
-
-.portfolio .minesweeper .left {
-  width: 50%;
-}
-
-.portfolio .minesweeper img {
-  width: 100%;
-}
-
-.portfolio .scraper {
-  display: block;
-}
-
-.portfolio .example-work p {
-  margin-bottom: 1.5rem;
-}
-
-.portfolio .example-work ul {
-  margin-left: 1.5rem;
 }
 
 /* gallery window */
@@ -589,13 +471,6 @@
   background-repeat: no-repeat;
 }
 
-/* .gallery .img-gallery .gall-icon .img-icon .img-filter {
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-  color: #008083;
-} */
-
 .gallery .img-gallery .gall-icon p {
   font-size: 0.75rem;
   padding: 0.1rem;
@@ -716,70 +591,6 @@
 .about .about-container i {
   cursor: url("./assets/CursorP.cur"), auto;
   font-size: 2rem;
-}
-
-/* resume window */
-
-.resume {
-  height: 80vh;
-  width: 90vw;
-
-  border-top-color: var(--window-top-left);
-  border-left-color: var(--window-top-left);
-  border-right-color: var(--window-bottom-right);
-  border-bottom-color: var(--window-bottom-right);
-  border-width: 0.15rem;
-  border-style: outset;
-
-  background: #fff;
-
-  overflow: hidden;
-  position: absolute;
-}
-
-.resume .resume-container {
-  height: 100%;
-  width: 100%;
-
-  overflow-y: scroll;
-  -ms-overflow-style: none;  /* internext explorer */
-  scrollbar-width: none;  /* firefox */
-}
-
-.resume .resume-container img {
-  width: 100%;
-  object-fit: contain;
-}
-
-.resume .resume-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  position: absolute;
-  bottom: 0;
-
-  background: var(--window-bg);
-  width: 100%;
-}
-
-.resume .resume-footer h2 {
-  font-size: 0.75rem;
-}
-
-.resume .resume-footer button {
-  background: var(--window-bg);
-  border-top-color: var(--window-top-left);
-  border-left-color: var(--window-top-left);
-  border-right-color: var(--window-bottom-right);
-  border-bottom-color: var(--window-bottom-right);
-  border-width: 0.15rem;
-  border-style: outset;
-
-  width: 5rem;
-  padding: 0.2rem;
-
-  cursor: url("./assets/CursorP.cur"), auto;
 }
 
 /* footer */
